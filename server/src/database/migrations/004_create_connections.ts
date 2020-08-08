@@ -5,18 +5,18 @@ export async function up(knex: Knex) {
     table.increments('id').primary()
 
     table.integer('user_id')
-      .notNullable()
       .references('id')
       .inTable('user')
       .onUpdate('CASCADE')
       .onDelete('CASCADE')
+      .notNullable()
 
     table.timestamp('created_at')
-      .defaultTo('now()')
+      .defaultTo(knex.raw('CURRENT_TIMESTAMP'))
       .notNullable()
   })
 }
 
 export async function down(knex: Knex) {
-  return knex.schema.dropSchema('connections');
+  return knex.schema.dropTable('connections');
 }
